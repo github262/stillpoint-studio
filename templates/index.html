@@ -1,0 +1,2319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stillpoint — A Boutique Yoga Studio</title>
+<meta name="csrf-token" content="{{ csrf_token }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..600,0..100;1,9..144,300..500,0..100&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F2E8;
+    --paper-deep:#EFE7D6;
+    --sand:#E5D9C2;
+    --sand-deep:#C9B895;
+    --sage:#7E8E6C;
+    --sage-deep:#4F5D43;
+    --cream:#FBF7EE;
+    --terracotta:#B5634A;
+    --terracotta-soft:#C77E64;
+    --dusk:#D9A89E;
+    --ink:#2E2A21;
+    --ink-soft:#6F6757;
+    --line:#D9CFBC;
+    --line-soft:#E8DFCC;
+    --serif:'Fraunces',Georgia,serif;
+    --sans:'Manrope',system-ui,sans-serif;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--sans);
+    font-weight:300;
+    background:var(--paper);
+    color:var(--ink);
+    line-height:1.75;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    letter-spacing:0.005em;
+  }
+
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:200;
+    opacity:0.55;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.36 0 0 0 0 0.32 0 0 0 0 0.22 0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode:multiply;
+  }
+
+  body::after{
+    content:'';
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    z-index:1;
+    background:radial-gradient(ellipse 80% 60% at 80% 0%, rgba(217,168,158,0.18), transparent 60%),
+               radial-gradient(ellipse 70% 50% at 0% 100%, rgba(126,142,108,0.12), transparent 60%);
+  }
+
+  ::selection{background:var(--dusk);color:var(--ink);}
+
+  .nav{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:1.6rem 3rem;
+    transition:background 600ms ease, padding 400ms ease, backdrop-filter 400ms ease;
+  }
+  .nav.scrolled{
+    background:rgba(247,242,232,0.85);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    padding:1.1rem 3rem;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .nav__brand{
+    display:flex;
+    align-items:center;
+    gap:0.7rem;
+    font-family:var(--serif);
+    font-size:1.25rem;
+    font-weight:400;
+    letter-spacing:0.02em;
+    color:var(--ink);
+    text-decoration:none;
+  }
+  .nav__mark{
+    width:22px;height:22px;
+    border:1px solid var(--sage-deep);
+    border-radius:50%;
+    position:relative;
+    flex-shrink:0;
+  }
+  .nav__mark::after{
+    content:'';
+    position:absolute;
+    inset:7px;
+    background:var(--terracotta);
+    border-radius:50%;
+  }
+  .nav__links{
+    display:flex;
+    gap:2.5rem;
+    list-style:none;
+  }
+  .nav__links a{
+    color:var(--ink-soft);
+    text-decoration:none;
+    font-size:0.83rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    font-weight:400;
+    position:relative;
+    transition:color 300ms ease;
+  }
+  .nav__links a::after{
+    content:'';
+    position:absolute;
+    left:0;right:100%;
+    bottom:-4px;
+    height:1px;
+    background:var(--terracotta);
+    transition:right 400ms ease;
+  }
+  .nav__links a:hover{color:var(--ink);}
+  .nav__links a:hover::after{right:0;}
+  .nav__cta{
+    font-family:var(--sans);
+    font-size:0.83rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--cream);
+    background:var(--sage-deep);
+    padding:0.7rem 1.4rem;
+    border-radius:2rem;
+    text-decoration:none;
+    transition:background 300ms ease, transform 300ms ease;
+    border:none;
+    cursor:pointer;
+  }
+  .nav__cta:hover{background:var(--terracotta);transform:translateY(-1px);}
+
+  .hero{
+    min-height:100vh;
+    position:relative;
+    display:flex;
+    align-items:center;
+    padding:8rem 3rem 4rem;
+    overflow:hidden;
+  }
+  
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 160px;
+    background: linear-gradient(to bottom, rgba(247,242,232,0.9) 0%, rgba(247,242,232,0) 100%);
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .hero__visual{
+    position:absolute;
+    inset:0;
+    z-index:2;
+    overflow:hidden;
+  }
+  .hero__image-wrap{
+    position:absolute;
+    inset:-3%;
+    animation:breathe 4s ease-in-out infinite;
+    will-change:transform;
+  }
+  .hero__image{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:sepia(0.22) saturate(0.78) brightness(0.96) contrast(0.95);
+  }
+  @keyframes breathe{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.045);}
+  }
+  .hero__tint{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(115deg,
+      rgba(247,242,232,0.92) 0%,
+      rgba(247,242,232,0.55) 30%,
+      rgba(247,242,232,0.15) 55%,
+      rgba(229,217,194,0.35) 100%);
+    z-index:3;
+  }
+  .hero__sunbeam{
+    position:absolute;
+    top:-30%;
+    right:-15%;
+    width:75%;
+    height:160%;
+    background:linear-gradient(155deg,
+      rgba(255,238,200,0.0) 0%,
+      rgba(255,238,200,0.35) 30%,
+      rgba(255,238,200,0.15) 55%,
+      transparent 75%);
+    transform:rotate(8deg);
+    z-index:4;
+    pointer-events:none;
+    mix-blend-mode:screen;
+    animation:beam 4s ease-in-out infinite;
+  }
+  @keyframes beam{
+    0%,100%{opacity:0.7;}
+    50%{opacity:1;}
+  }
+
+  .hero__content{
+    position:relative;
+    z-index:5;
+    max-width:680px;
+    margin-left:2rem;
+  }
+  .hero__eyebrow{
+    font-size:0.78rem;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:var(--terracotta);
+    font-weight:500;
+    margin-bottom:1.6rem;
+    display:flex;
+    align-items:center;
+    gap:0.9rem;
+  }
+  .hero__eyebrow::before{
+    content:'';
+    width:36px;
+    height:1px;
+    background:var(--terracotta);
+  }
+  .hero__title{
+    font-family:var(--serif);
+    font-weight:300;
+    font-size:clamp(4rem,11vw,9.5rem);
+    line-height:0.95;
+    letter-spacing:-0.025em;
+    color:var(--ink);
+    font-variation-settings:"opsz" 144,"SOFT" 60;
+    margin-bottom:1.8rem;
+  }
+  .hero__title em{
+    font-style:italic;
+    font-weight:300;
+    color:var(--sage-deep);
+    font-variation-settings:"opsz" 144,"SOFT" 80;
+  }
+  .hero__sub{
+    font-family:var(--serif);
+    font-size:1.4rem;
+    line-height:1.55;
+    color:var(--ink-soft);
+    font-weight:300;
+    font-style:italic;
+    max-width:480px;
+    margin-bottom:2.8rem;
+    font-variation-settings:"opsz" 24;
+  }
+  .hero__actions{
+    display:flex;
+    align-items:center;
+    gap:2rem;
+    flex-wrap:wrap;
+  }
+  .hero__cta{
+    display:inline-flex;
+    align-items:center;
+    gap:0.8rem;
+    background:var(--ink);
+    color:var(--cream);
+    text-decoration:none;
+    padding:1.1rem 2rem;
+    border-radius:3rem;
+    font-size:0.85rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    font-weight:500;
+    transition:background 400ms ease,transform 400ms ease,padding 400ms ease;
+  }
+  .hero__cta:hover{
+    background:var(--terracotta);
+    padding:1.1rem 2.4rem;
+  }
+  .hero__cta svg{transition:transform 400ms ease;}
+  .hero__cta:hover svg{transform:translateX(4px);}
+  .hero__link{
+    color:var(--ink-soft);
+    font-size:0.85rem;
+    letter-spacing:0.06em;
+    text-decoration:none;
+    border-bottom:1px solid var(--line);
+    padding-bottom:0.3rem;
+    transition:color 300ms ease,border-color 300ms ease;
+  }
+  .hero__link:hover{color:var(--ink);border-color:var(--terracotta);}
+
+  .breath{
+    position:absolute;
+    bottom:3rem;
+    left:3rem;
+    z-index:5;
+    display:flex;
+    align-items:center;
+    gap:0.9rem;
+    color:var(--ink-soft);
+    font-size:0.72rem;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+  }
+  .breath__circle{
+    width:18px;height:18px;
+    border-radius:50%;
+    border:1px solid var(--sage);
+    position:relative;
+  }
+  .breath__circle::after{
+    content:'';
+    position:absolute;
+    inset:3px;
+    border-radius:50%;
+    background:var(--sage);
+    animation:breath-pulse 4s ease-in-out infinite;
+  }
+  @keyframes breath-pulse{
+    0%,100%{transform:scale(0.4);opacity:0.4;}
+    50%{transform:scale(1);opacity:1;}
+  }
+  .breath__label{
+    transition:opacity 600ms ease;
+  }
+
+  .hero__meta{
+    position:absolute;
+    bottom:3rem;
+    right:3rem;
+    z-index:5;
+    text-align:right;
+    color:var(--ink-soft);
+    font-size:0.78rem;
+    letter-spacing:0.04em;
+    line-height:1.7;
+  }
+  .hero__meta strong{
+    color:var(--ink);
+    font-weight:500;
+    display:block;
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:0.95rem;
+    margin-bottom:0.2rem;
+  }
+
+  .manifesto{
+    padding:11rem 3rem;
+    max-width:1100px;
+    margin:0 auto;
+    position:relative;
+    z-index:5;
+  }
+  .manifesto__num{
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--terracotta);
+    font-size:0.9rem;
+    letter-spacing:0.1em;
+    margin-bottom:2rem;
+    display:block;
+  }
+  .manifesto__text{
+    font-family:var(--serif);
+    font-weight:300;
+    font-size:clamp(2rem,4.2vw,3.4rem);
+    line-height:1.35;
+    letter-spacing:-0.015em;
+    color:var(--ink);
+    font-variation-settings:"opsz" 80,"SOFT" 50;
+  }
+  .manifesto__text em{
+    font-style:italic;
+    color:var(--sage-deep);
+  }
+  .manifesto__sig{
+    margin-top:3rem;
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    color:var(--ink-soft);
+    font-size:0.85rem;
+    letter-spacing:0.04em;
+  }
+  .manifesto__sig::before{
+    content:'';
+    width:60px;
+    height:1px;
+    background:var(--line);
+  }
+
+  .practices{
+    padding:6rem 3rem 10rem;
+    position:relative;
+    z-index:5;
+  }
+  .section-head{
+    max-width:1400px;
+    margin:0 auto 6rem;
+    display:grid;
+    grid-template-columns:1fr 2fr;
+    gap:4rem;
+    align-items:end;
+  }
+  .section-head__num{
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--terracotta);
+    font-size:0.95rem;
+    letter-spacing:0.08em;
+  }
+  .section-head__label{
+    display:block;
+    margin-top:0.4rem;
+    color:var(--ink-soft);
+    font-size:0.78rem;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+  }
+  .section-head__title{
+    font-family:var(--serif);
+    font-weight:300;
+    font-size:clamp(2.4rem,5vw,4rem);
+    line-height:1.1;
+    letter-spacing:-0.02em;
+    color:var(--ink);
+    font-variation-settings:"opsz" 100,"SOFT" 40;
+  }
+  .section-head__title em{
+    font-style:italic;
+    color:var(--sage-deep);
+  }
+  .section-head__lede{
+    margin-top:1.4rem;
+    color:var(--ink-soft);
+    max-width:520px;
+    font-size:1.05rem;
+  }
+
+  .practice{
+    max-width:1400px;
+    margin:0 auto 8rem;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:5rem;
+    align-items:center;
+  }
+  .practice:nth-child(even) .practice__media{order:2;}
+  .practice:nth-child(even) .practice__body{order:1;}
+
+  .practice__media{
+    position:relative;
+    overflow:hidden;
+    border-radius:2px;
+    aspect-ratio:4/5;
+    background:var(--sand);
+  }
+  .practice__media img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:sepia(0.15) saturate(0.85);
+    transition:transform 8s ease-out;
+    will-change:transform;
+  }
+  .practice__media:hover img{transform:scale(1.08);}
+  .practice__media::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,transparent 60%,rgba(46,42,33,0.18) 100%);
+    pointer-events:none;
+  }
+  .practice__tag{
+    position:absolute;
+    top:1.4rem;
+    left:1.4rem;
+    background:rgba(247,242,232,0.92);
+    backdrop-filter:blur(8px);
+    color:var(--ink);
+    font-size:0.7rem;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    padding:0.5rem 0.9rem;
+    border-radius:2rem;
+    z-index:2;
+  }
+
+  .practice__body{padding:1rem 0;}
+  .practice__num{
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--terracotta);
+    font-size:0.95rem;
+    margin-bottom:1rem;
+    letter-spacing:0.06em;
+  }
+  .practice__name{
+    font-family:var(--serif);
+    font-weight:300;
+    font-size:clamp(2.2rem,4vw,3.4rem);
+    line-height:1.05;
+    letter-spacing:-0.02em;
+    color:var(--ink);
+    margin-bottom:1.5rem;
+    font-variation-settings:"opsz" 90,"SOFT" 50;
+  }
+  .practice__name em{font-style:italic;color:var(--sage-deep);}
+  .practice__desc{
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    line-height:1.85;
+    max-width:440px;
+    margin-bottom:2rem;
+  }
+  .practice__meta{
+    display:flex;
+    gap:2.5rem;
+    margin-bottom:2.4rem;
+    padding-top:1.8rem;
+    border-top:1px solid var(--line);
+  }
+  .practice__meta-item{
+    display:flex;
+    flex-direction:column;
+    gap:0.3rem;
+  }
+  .practice__meta-label{
+    font-size:0.7rem;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .practice__meta-val{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.05rem;
+    color:var(--ink);
+  }
+  .intensity{
+    display:flex;
+    gap:5px;
+    align-items:center;
+  }
+  .intensity span{
+    width:8px;height:8px;
+    border-radius:50%;
+    background:var(--line);
+  }
+  .intensity span.on{background:var(--terracotta);}
+  .practice__link{
+    display:inline-flex;
+    align-items:center;
+    gap:0.6rem;
+    color:var(--ink);
+    text-decoration:none;
+    font-size:0.85rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    border-bottom:1px solid var(--ink);
+    padding-bottom:0.4rem;
+    transition:color 300ms ease,border-color 300ms ease,gap 300ms ease;
+  }
+  .practice__link:hover{color:var(--terracotta);border-color:var(--terracotta);gap:0.9rem;}
+
+  .interlude{
+    padding:8rem 3rem;
+    text-align:center;
+    position:relative;
+    z-index:5;
+    background:linear-gradient(180deg,transparent,var(--paper-deep) 30%,var(--paper-deep) 70%,transparent);
+  }
+  .interlude__quote{
+    font-family:var(--serif);
+    font-weight:300;
+    font-style:italic;
+    font-size:clamp(1.6rem,3vw,2.4rem);
+    line-height:1.5;
+    color:var(--ink);
+    max-width:780px;
+    margin:0 auto;
+    letter-spacing:-0.005em;
+    font-variation-settings:"opsz" 60,"SOFT" 70;
+  }
+  .interlude__attr{
+    margin-top:2rem;
+    color:var(--ink-soft);
+    font-size:0.85rem;
+    letter-spacing:0.1em;
+  }
+
+  .teachers{
+    padding:8rem 3rem;
+    position:relative;
+    z-index:5;
+  }
+  .teachers__grid{
+    max-width:1400px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:3rem;
+  }
+  .teacher{
+    background:var(--cream);
+    border:1px solid var(--line-soft);
+    border-radius:3px;
+    overflow:hidden;
+    transition:transform 600ms ease,box-shadow 600ms ease;
+    cursor:pointer;
+  }
+  .teacher:hover{
+    transform:translateY(-4px);
+    box-shadow:0 30px 60px -30px rgba(46,42,33,0.18);
+  }
+  .teacher__media{
+    position:relative;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    background:var(--sand);
+  }
+  .teacher__media img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:sepia(0.18) saturate(0.8) brightness(0.97);
+    transition:transform 6s ease-out,filter 600ms ease;
+  }
+  .teacher:hover .teacher__media img{
+    transform:scale(1.06);
+    filter:sepia(0.1) saturate(0.85) brightness(0.99);
+  }
+  .teacher__media::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,transparent 50%,rgba(46,42,33,0.25));
+  }
+  .teacher__body{
+    padding:2rem 1.8rem 2.4rem;
+  }
+  .teacher__role{
+    font-size:0.72rem;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--terracotta);
+    margin-bottom:0.6rem;
+  }
+  .teacher__name{
+    font-family:var(--serif);
+    font-weight:300;
+    font-size:1.85rem;
+    line-height:1.1;
+    color:var(--ink);
+    margin-bottom:0.4rem;
+    font-variation-settings:"opsz" 40,"SOFT" 60;
+  }
+  .teacher__name em{font-style:italic;color:var(--sage-deep);}
+  .teacher__discipline{
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--ink-soft);
+    font-size:0.95rem;
+    margin-bottom:1.4rem;
+  }
+  .teacher__quote{
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--ink);
+    font-size:1.05rem;
+    line-height:1.6;
+    min-height:5.2em;
+    position:relative;
+    font-variation-settings:"opsz" 24;
+  }
+  .teacher__quote::before{
+    content:'';
+    display:block;
+    width:24px;
+    height:1px;
+    background:var(--terracotta);
+    margin-bottom:0.9rem;
+  }
+  .teacher__hint{
+    color:var(--ink-soft);
+    font-style:normal;
+    font-family:var(--sans);
+    font-size:0.78rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    opacity:0.7;
+  }
+  .teacher__caret{
+    display:inline-block;
+    width:2px;
+    height:1.1em;
+    background:var(--terracotta);
+    vertical-align:text-bottom;
+    margin-left:1px;
+    animation:blink 0.9s steps(2) infinite;
+  }
+  @keyframes blink{
+    0%,50%{opacity:1;}
+    50.01%,100%{opacity:0;}
+  }
+
+  .schedule{
+    padding:8rem 3rem;
+    position:relative;
+    z-index:5;
+    background:linear-gradient(180deg,transparent,var(--paper-deep) 20%,var(--paper-deep) 80%,transparent);
+  }
+  .schedule__inner{
+    max-width:1200px;
+    margin:0 auto;
+  }
+  .schedule__filter{
+    display:flex;
+    gap:0.6rem;
+    flex-wrap:wrap;
+    margin-bottom:3rem;
+  }
+  .schedule__filter button{
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--ink-soft);
+    padding:0.6rem 1.2rem;
+    border-radius:2rem;
+    font-family:var(--sans);
+    font-size:0.8rem;
+    letter-spacing:0.08em;
+    cursor:pointer;
+    transition:all 300ms ease;
+  }
+  .schedule__filter button:hover{border-color:var(--sage);color:var(--ink);}
+  .schedule__filter button.active{
+    background:var(--sage-deep);
+    border-color:var(--sage-deep);
+    color:var(--cream);
+  }
+
+  .schedule__day{
+    margin-bottom:3.5rem;
+  }
+  .schedule__day-head{
+    display:flex;
+    align-items:baseline;
+    gap:1.4rem;
+    padding-bottom:1rem;
+    border-bottom:1px solid var(--line);
+    margin-bottom:0.6rem;
+  }
+  .schedule__day-name{
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:2rem;
+    font-weight:300;
+    color:var(--ink);
+    font-variation-settings:"opsz" 50,"SOFT" 70;
+  }
+  .schedule__day-date{
+    color:var(--ink-soft);
+    font-size:0.85rem;
+    letter-spacing:0.1em;
+  }
+  .schedule__day-today{
+    margin-left:auto;
+    font-size:0.7rem;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    color:var(--terracotta);
+    background:rgba(181,99,74,0.08);
+    padding:0.3rem 0.7rem;
+    border-radius:1rem;
+  }
+
+  .schedule__row{
+    border-bottom:1px solid var(--line-soft);
+    transition:background 300ms ease;
+  }
+  .schedule__row:hover{background:rgba(229,217,194,0.3);}
+  .schedule__row-head{
+    display:grid;
+    grid-template-columns:90px 1.5fr 1fr auto auto 40px;
+    gap:1.5rem;
+    align-items:center;
+    padding:1.3rem 0.5rem;
+    cursor:pointer;
+  }
+  .schedule__time{
+    font-family:var(--serif);
+    font-style:italic;
+    color:var(--ink);
+    font-size:1.05rem;
+  }
+  .schedule__class{
+    font-family:var(--serif);
+    font-size:1.2rem;
+    color:var(--ink);
+    font-weight:400;
+  }
+  .schedule__class em{font-style:italic;color:var(--sage-deep);}
+  .schedule__teacher{
+    color:var(--ink-soft);
+    font-size:0.92rem;
+  }
+  .schedule__duration{
+    color:var(--ink-soft);
+    font-size:0.85rem;
+    letter-spacing:0.04em;
+  }
+  .schedule__seats{
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+    font-size:0.82rem;
+    color:var(--ink-soft);
+  }
+  .seats-dots{
+    display:flex;
+    gap:3px;
+  }
+  .seats-dots span{
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--line);
+  }
+  .seats-dots span.open{background:var(--sage);}
+  .seats-dots span.few{background:var(--terracotta);}
+  .seats-dots span.full{background:var(--ink-soft);opacity:0.4;}
+  .schedule__expand{
+    width:28px;height:28px;
+    border:1px solid var(--line);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:transform 400ms ease,background 300ms ease,border-color 300ms ease;
+    color:var(--ink-soft);
+  }
+  .schedule__row.open .schedule__expand{
+    transform:rotate(45deg);
+    background:var(--terracotta);
+    border-color:var(--terracotta);
+    color:var(--cream);
+  }
+  .schedule__detail{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height 500ms ease;
+  }
+  .schedule__row.open .schedule__detail{max-height:500px;}
+  .schedule__detail-inner{
+    padding:1rem 0.5rem 2rem;
+    display:grid;
+    grid-template-columns:90px 1.5fr 1fr auto auto 40px;
+    gap:1.5rem;
+  }
+  .schedule__detail-content{
+    grid-column:2 / 4;
+    color:var(--ink-soft);
+    line-height:1.8;
+  }
+  .schedule__detail-content strong{
+    display:block;
+    color:var(--ink);
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.05rem;
+    margin-bottom:0.4rem;
+    font-weight:400;
+  }
+  .schedule__detail-meta{
+    grid-column:4 / 6;
+    display:flex;
+    flex-direction:column;
+    gap:0.6rem;
+    font-size:0.85rem;
+  }
+  .schedule__detail-meta div{
+    display:flex;
+    gap:0.6rem;
+  }
+  .schedule__detail-meta dt{
+    color:var(--ink-soft);
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    font-size:0.7rem;
+    min-width:90px;
+    padding-top:2px;
+  }
+  .schedule__detail-meta dd{color:var(--ink);}
+  .schedule__reserve{
+    grid-column:2 / 3;
+    margin-top:0.4rem;
+    display:inline-flex;
+    align-items:center;
+    gap:0.5rem;
+    background:var(--sage-deep);
+    color:var(--cream);
+    text-decoration:none;
+    padding:0.7rem 1.4rem;
+    border-radius:2rem;
+    font-size:0.78rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    width:fit-content;
+    transition:background 300ms ease;
+    cursor:pointer;
+  }
+  .schedule__reserve:hover{background:var(--terracotta);}
+  .schedule__reserve.disabled{
+    background:transparent;
+    color:var(--ink-soft);
+    border:1px solid var(--line);
+    cursor:not-allowed;
+  }
+
+  .begin{
+    padding:10rem 3rem;
+    position:relative;
+    z-index:5;
+    overflow:hidden;
+  }
+  .begin__inner{
+    max-width:1300px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1fr 1.1fr;
+    gap:5rem;
+    align-items:center;
+  }
+  .begin__media{
+    position:relative;
+    aspect-ratio:4/5;
+    overflow:hidden;
+    border-radius:3px;
+    background:var(--sand);
+  }
+  .begin__media img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    filter:sepia(0.2) saturate(0.78);
+    transition:transform 8s ease-out;
+  }
+  .begin__media:hover img{transform:scale(1.08);}
+  .begin__media-caption{
+    position:absolute;
+    bottom:1.4rem;
+    left:1.4rem;
+    right:1.4rem;
+    color:var(--cream);
+    font-family:var(--serif);
+    font-style:italic;
+    font-size:1.05rem;
+    line-height:1.5;
+    z-index:2;
+  }
+  .begin__media::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,transparent 50%,rgba(46,42,33,0.55));
+  }
+
+  .begin__form-wrap{
+    position:relative;
+  }
+  .begin__eyebrow{
+    font-size:0.78rem;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:var(--terracotta);
+    margin-bottom:1.4rem;
+    display:flex;
+    align-items:center;
+    gap:0.9rem;
+  }
+  .begin__eyebrow::before{
+    content:'';
+    width:36px;
+    height:1px;
+    background:var(--terracotta);
+  }
+  .begin__title{
+    font-family:var(--serif);
+    font-weight:300;
+    font-size:clamp(2.4rem,4.5vw,3.6rem);
+    line-height:1.05;
+    letter-spacing:-0.02em;
+    color:var(--ink);
+    margin-bottom:1.4rem;
+    font-variation-settings:"opsz" 100,"SOFT" 50;
+  }
+  .begin__title em{font-style:italic;color:var(--sage-deep);}
+  .begin__lede{
+    color:var(--ink-soft);
+    margin-bottom:2.8rem;
+    font-size:1.05rem;
+    max-width:440px;
+  }
+
+  .form{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:1.4rem 1.4rem;
+  }
+  .field{
+    position:relative;
+  }
+  .field--full{grid-column:1 / -1;}
+  .field label{
+    display:block;
+    font-size:0.72rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-bottom:0.5rem;
+  }
+  .field input,
+  .field select{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--line);
+    padding:0.7rem 0;
+    font-family:var(--sans);
+    font-size:1rem;
+    color:var(--ink);
+    outline:none;
+    transition:border-color 300ms ease;
+    font-weight:300;
+    appearance:none;
+    -webkit-appearance:none;
+  }
+  .field input:focus,
+  .field select:focus{border-color:var(--terracotta);}
+  .field select{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%236F6757' fill='none' stroke-width='1'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 0.3rem center;
+    padding-right:1.5rem;
+    cursor:pointer;
+  }
+  .field--full input{padding:0.7rem 0;}
+  .form__submit{
+    grid-column:1 / -1;
+    margin-top:1.4rem;
+    background:var(--ink);
+    color:var(--cream);
+    border:none;
+    padding:1.2rem 2rem;
+    border-radius:3rem;
+    font-family:var(--sans);
+    font-size:0.85rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    font-weight:500;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:0.8rem;
+    transition:background 400ms ease,padding 400ms ease;
+    width:fit-content;
+  }
+  .form__submit:hover{background:var(--terracotta);padding:1.2rem 2.4rem;}
+  .form__submit svg{transition:transform 400ms ease;}
+  .form__submit:hover svg{transform:translateX(4px);}
+  .form__fine{
+    grid-column:1 / -1;
+    color:var(--ink-soft);
+    font-size:0.8rem;
+    margin-top:0.6rem;
+    font-style:italic;
+    font-family:var(--serif);
+  }
+
+  .form__success{
+    display:none;
+    grid-column:1 / -1;
+    padding:2rem;
+    background:var(--cream);
+    border:1px solid var(--sage);
+    border-radius:4px;
+    color:var(--ink);
+    font-family:var(--serif);
+    font-style:italic;
+    line-height:1.6;
+    margin-bottom:1.5rem;
+  }
+  .form__success.show{display:block;}
+  .form__reset-link {
+    display:inline-block;
+    margin-top:1rem;
+    font-family:var(--sans);
+    font-style:normal;
+    font-size:0.75rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--terracotta);
+    text-decoration:none;
+    border-bottom:1px solid var(--terracotta);
+    padding-bottom:2px;
+  }
+
+  .footer{
+    padding:6rem 3rem 3rem;
+    position:relative;
+    z-index:5;
+    border-top:1px solid var(--line);
+    background:var(--paper-deep);
+  }
+  .footer__inner{
+    max-width:1400px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:1.5fr 1fr 1fr 1fr;
+    gap:3rem;
+    margin-bottom:4rem;
+  }
+  .footer__brand{
+    font-family:var(--serif);
+    font-size:1.8rem;
+    font-weight:300;
+    color:var(--ink);
+    margin-bottom:1rem;
+    font-variation-settings:"opsz" 50,"SOFT" 70;
+  }
+  .footer__brand em{font-style:italic;color:var(--sage-deep);}
+  .footer__tag{
+    color:var(--ink-soft);
+    font-style:italic;
+    font-family:var(--serif);
+    max-width:280px;
+    margin-bottom:1.6rem;
+  }
+  .footer__address{
+    color:var(--ink-soft);
+    font-size:0.92rem;
+    line-height:1.7;
+  }
+  .footer__col h4{
+    font-size:0.72rem;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    color:var(--ink);
+    margin-bottom:1.2rem;
+    font-weight:500;
+  }
+  .footer__col ul{list-style:none;}
+  .footer__col li{margin-bottom:0.6rem;}
+  .footer__col a{
+    color:var(--ink-soft);
+    text-decoration:none;
+    font-size:0.92rem;
+    transition:color 300ms ease;
+  }
+  .footer__col a:hover{color:var(--terracotta);}
+  .footer__bottom{
+    max-width:1400px;
+    margin:0 auto;
+    padding-top:2rem;
+    border-top:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:var(--ink-soft);
+    font-size:0.82rem;
+    flex-wrap:wrap;
+    gap:1rem;
+  }
+  .footer__bottom a{
+    color:var(--ink-soft);
+    text-decoration:none;
+  }
+  .footer__bottom a:hover{color:var(--ink);}
+
+  .fade-up{
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity 600ms ease, transform 600ms ease;
+  }
+  .fade-up.in{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .fade-up.delay-1{transition-delay:120ms;}
+  .fade-up.delay-2{transition-delay:220ms;}
+  .fade-up.delay-3{transition-delay:320ms;}
+  .fade-up.delay-4{transition-delay:420ms;}
+
+  .toast{
+    position:fixed;
+    bottom:2rem;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--ink);
+    color:var(--cream);
+    padding:0.9rem 1.6rem;
+    border-radius:2rem;
+    font-size:0.85rem;
+    z-index:300;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 400ms ease,transform 400ms ease;
+    box-shadow:0 20px 40px -15px rgba(46,42,33,0.4);
+    max-width: 90%;
+    text-align: center;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+
+  .chime-prompt{
+    position:fixed;
+    bottom:2rem;
+    left:2rem;
+    background:var(--cream);
+    border:1px solid var(--line);
+    padding:1rem 1.2rem;
+    border-radius:8px;
+    box-shadow:0 20px 40px -15px rgba(46,42,33,0.2);
+    z-index:150;
+    display:flex;
+    align-items:center;
+    gap:0.9rem;
+    transform:translateY(120%);
+    transition:transform 600ms ease;
+    max-width:320px;
+  }
+  .chime-prompt.show{transform:translateY(0);}
+  .chime-prompt__icon{
+    width:36px;height:36px;
+    border-radius:50%;
+    background:var(--sage);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--cream);
+    flex-shrink:0;
+  }
+  .chime-prompt__text{
+    font-size:0.82rem;
+    color:var(--ink);
+    line-height:1.5;
+  }
+  .chime-prompt__text strong{
+    display:block;
+    font-family:var(--serif);
+    font-style:italic;
+    margin-bottom:0.1rem;
+    font-weight:400;
+  }
+  .chime-prompt__close{
+    position:absolute;
+    top:0.4rem;
+    right:0.5rem;
+    background:none;
+    border:none;
+    color:var(--ink-soft);
+    cursor:pointer;
+    font-size:1.1rem;
+    line-height:1;
+  }
+
+  /* ===== Booking Modal ===== */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(46, 42, 33, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 400ms ease;
+  }
+  .modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 3rem;
+    max-width: 480px;
+    width: 90%;
+    border-radius: 4px;
+    box-shadow: 0 40px 80px -20px rgba(0,0,0,0.3);
+    transform: translateY(20px);
+    transition: transform 400ms ease;
+    position: relative;
+  }
+  .modal-overlay.show .modal-card {
+    transform: translateY(0);
+  }
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    line-height: 1;
+  }
+  .modal-title {
+    font-family: var(--serif);
+    font-weight: 300;
+    font-size: 2rem;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    font-variation-settings:"opsz" 60,"SOFT" 60;
+  }
+  .modal-title em { font-style: italic; color: var(--sage-deep); }
+  .modal-subtitle {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--ink-soft);
+    margin-bottom: 2rem;
+    font-size: 1rem;
+  }
+  .booking-form {
+    display: grid;
+    gap: 1.2rem;
+  }
+  .booking-form input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--line);
+    padding: 0.7rem 0;
+    font-family: var(--sans);
+    font-size: 1rem;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 300ms ease;
+  }
+  .booking-form input:focus {
+    border-color: var(--terracotta);
+  }
+  .booking-form button {
+    margin-top: 1rem;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    padding: 1rem 1.5rem;
+    border-radius: 3rem;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 300ms ease;
+  }
+  .booking-form button:hover {
+    background: var(--terracotta);
+  }
+  .booking-form button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  @media (max-width:980px){
+    .nav{padding:1.2rem 1.5rem;}
+    .nav__links{display:none;}
+    .nav.scrolled{padding:0.9rem 1.5rem;}
+    .hero{padding:7rem 1.5rem 4rem;}
+    .hero__content{margin-left:0;}
+    .breath{left:1.5rem;bottom:2rem;}
+    .hero__meta{right:1.5rem;bottom:2rem;}
+    .manifesto{padding:6rem 1.5rem;}
+    .practices{padding:4rem 1.5rem 6rem;}
+    .section-head{grid-template-columns:1fr;gap:1.5rem;}
+    .practice{grid-template-columns:1fr;gap:2.5rem;margin-bottom:5rem;}
+    .practice:nth-child(even) .practice__media{order:0;}
+    .practice:nth-child(even) .practice__body{order:0;}
+    .teachers{padding:5rem 1.5rem;}
+    .teachers__grid{grid-template-columns:1fr;gap:2rem;}
+    .schedule{padding:5rem 1.5rem;}
+    .schedule__row-head{
+      grid-template-columns:75px 1fr auto 32px;
+      gap:0.8rem;
+    }
+    .schedule__teacher,.schedule__duration{display:none;}
+    .schedule__detail-inner{grid-template-columns:75px 1fr;}
+    .schedule__detail-content{grid-column:2;}
+    .schedule__detail-meta{grid-column:2;}
+    .begin{padding:5rem 1.5rem;}
+    .begin__inner{grid-template-columns:1fr;gap:3rem;}
+    .form{grid-template-columns:1fr;}
+    .footer{padding:4rem 1.5rem 2rem;}
+    .footer__inner{grid-template-columns:1fr 1fr;gap:2rem;}
+    .footer__brand-col{grid-column:1 / -1;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{
+      animation-duration:0.01ms !important;
+      transition-duration:0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <a href="#" class="nav__brand">
+      <span class="nav__mark" aria-hidden="true"></span>
+      <span>Stillpoint</span>
+    </a>
+    <ul class="nav__links">
+      <li><a href="#practices">Practices</a></li>
+      <li><a href="#teachers">Teachers</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#begin">Begin</a></li>
+    </ul>
+    <a href="#begin" class="nav__cta">Book a class</a>
+  </nav>
+
+  <header class="hero">
+    <div class="hero__visual" aria-hidden="true">
+      <div class="hero__image-wrap">
+        <img class="hero__image" src="https://picsum.photos/seed/stillpoint-morning-light-yoga/1800/1200.jpg" alt="">
+      </div>
+      <div class="hero__tint"></div>
+      <div class="hero__sunbeam"></div>
+    </div>
+
+    <div class="hero__content">
+      <p class="hero__eyebrow fade-up">A boutique yoga studio · Oakland, CA</p>
+      <h1 class="hero__title fade-up delay-1">Still<em>point</em></h1>
+      <p class="hero__sub fade-up delay-2">
+        Slow practice, soft attention, a return to the body — the antidote to a culture that confuses speed with meaning.
+      </p>
+      <div class="hero__actions fade-up delay-3">
+        <a href="#begin" class="hero__cta">
+          Begin with a free class
+          <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M9 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#schedule" class="hero__link">See this week's schedule</a>
+      </div>
+    </div>
+
+    <div class="breath" aria-hidden="true">
+      <div class="breath__circle"></div>
+      <span class="breath__label" id="breathLabel">breathe</span>
+    </div>
+
+    <div class="hero__meta">
+      <strong>147 Almond Street</strong>
+      Oakland, California<br>
+      Open daily · 6:30am – 8:30pm
+    </div>
+  </header>
+
+  <section class="manifesto">
+    <span class="manifesto__num fade-up">— 01 / our intention</span>
+    <p class="manifesto__text fade-up delay-1">
+      We practice slowly, so that we may <em>live fully.</em> Each class is an invitation to set down the noise of the day and arrive, simply, in the body you already inhabit.
+    </p>
+    <div class="manifesto__sig fade-up delay-2">A studio rooted in Oakland since 2014</div>
+  </section>
+
+  <section class="practices" id="practices">
+    <div class="section-head">
+      <div class="fade-up">
+        <span class="section-head__num">— 02</span>
+        <span class="section-head__label">Practices</span>
+      </div>
+      <div>
+        <h2 class="section-head__title fade-up delay-1">Four ways to <em>return</em> to the body.</h2>
+        <p class="section-head__lede fade-up delay-2">Each practice is taught in small groups of twelve or fewer, with attention to breath as the primary teacher.</p>
+      </div>
+    </div>
+
+    <article class="practice fade-up">
+      <div class="practice__media">
+        <span class="practice__tag">Movement</span>
+        <img src="https://picsum.photos/seed/yoga-vinyasa-flow-warm/900/1100.jpg" alt="A student flowing through a vinyasa sequence in soft morning light">
+      </div>
+      <div class="practice__body">
+        <p class="practice__num">01 — Vinyasa</p>
+        <h3 class="practice__name">Flow, with the <em>breath as guide</em>.</h3>
+        <p class="practice__desc">A slow, intelligent sequence that links movement to breath. We move through sun salutations and standing postures with the curiosity of a beginner — never the urgency of a workout.</p>
+        <div class="practice__meta">
+          <div class="practice__meta-item">
+            <span class="practice__meta-label">Duration</span>
+            <span class="practice__meta-val">60 minutes</span>
+          </div>
+          <div class="practice__meta-item">
+            <span class="practice__meta-label">Intensity</span>
+            <div class="intensity">
+              <span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span>
+            </div>
+          </div>
+          <div class="practice__meta-item">
+            <span class="practice__meta-label">Room</span>
+            <span class="practice__meta-val">Garden</span>
+          </div>
+        </div>
+        <a href="#schedule" class="practice__link">Find a vinyasa class
+          <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 4h10M8 1l3 3-3 3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="practice fade-up">
+      <div class="practice__media">
+        <span class="practice__tag">Stillness</span>
+        <img src="https://picsum.photos/seed/yoga-yin-stillness-floor/900/1100.jpg" alt="A student holding a yin yoga posture on the floor">
+      </div>
+      <div class="practice__body">
+        <p class="practice__num">02 — Yin</p>
+        <h3 class="practice__name">Long holds, <em>deep tissue</em>, patient attention.</h3>
+        <p class="practice__desc">Floor-based postures held for three to five minutes, releasing the deeper connective tissue. A meditative practice that asks not for effort, but for willingness to remain.</p>
+        <div class="practice__meta">
+          <div class="practice__meta-item">
+            <span class="practice__meta-label">Duration</span>
+            <span class="practice__meta-val">75 minutes</span>
+          </div>
+          <div class="practice__meta-item">
+            <span class="practice__meta-label">Intensity</span>
+            <div class="intensity">
+              <span class="on"></span><span class="on"></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="practice__meta-item">
+            <span class="practice__meta-label">Room</span>
+            <span class="practice__meta-val">Sun</span>
+          </div>
+        </div>
+        <a href="#schedule" class="practice__link">Find a yin class
+          <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 4h10M8 1l3 3-3 3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="practice fade-up">
+      <div class="practice__media">
+        <span class="practice__tag">Rest</span>
+        <img src="https://picsum.photos/seed/yoga-restorative-props-bolster/900/1100.jpg" alt="A restorative yoga setup with bolsters and blankets">
+      </div>
+      <div class="practice__body">
+        <p class="practice__num">03 — Restorative</p>
+        <h3 class="practice__name">Fully supported. <em>The nervous system softens.</em></h3>
+        <p class="practice__desc">Six postures, twenty minutes each, supported entirely by bolsters, blankets, and blocks. The body learns, slowly, that it is allowed to rest — and the parasympathetic nervous system remembers its native tongue.</p>
+        <div class="practice__meta">
+          <div class="practice__meta-item">
+            <span class="practice__meta-label">Duration</span>
+            <span class="practice__meta-val">90 minutes</span>
+          </div>
+          <div class="practice__meta-item">
+            <span class="practice__meta-label">Intensity</span>
+            <div class="intensity">
+              <span class="on"></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="practice__meta-item">
+            <span class="practice__meta-label">Room</span>
+            <span class="practice__meta-val">Garden</span>
+          </div>
+        </div>
+        <a href="#schedule" class="practice__link">Find a restorative class
+          <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 4h10M8 1l3 3-3 3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+    </article>
+
+    <article class="practice fade-up">
+      <div class="practice__media">
+        <span class="practice__tag">Breath</span>
+        <img src="https://picsum.photos/seed/yoga-breathwork-pranayama-quiet/900/1100.jpg" alt="A student seated in stillness during breathwork">
+      </div>
+      <div class="practice__body">
+        <p class="practice__num">04 — Breathwork</p>
+        <h3 class="practice__name">Pranayama — <em>the breath as bridge.</em></h3>
+        <p class="practice__desc">A seated practice of guided breathing techniques — alternate nostril, three-part breath, and gentle retention. The breath, observed closely, becomes a quiet door into the nervous system.</p>
+        <div class="practice__meta">
+          <div class="practice__meta-item">
+            <span class="practice__meta-label">Duration</span>
+            <span class="practice__meta-val">45 minutes</span>
+          </div>
+          <div class="practice__meta-item">
+            <span class="practice__meta-label">Intensity</span>
+            <div class="intensity">
+              <span class="on"></span><span class="on"></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="practice__meta-item">
+            <span class="practice__meta-label">Room</span>
+            <span class="practice__meta-val">Sun</span>
+          </div>
+        </div>
+        <a href="#schedule" class="practice__link">Find a breathwork class
+          <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 4h10M8 1l3 3-3 3" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+        </a>
+      </div>
+    </article>
+  </section>
+
+  <section class="interlude">
+    <blockquote class="interlude__quote fade-up">
+      "The body is the only place we are ever asked to live. We may as well furnish it with attention."
+    </blockquote>
+    <p class="interlude__attr fade-up delay-1">— from the studio journal, 2019</p>
+  </section>
+
+  <section class="teachers" id="teachers">
+    <div class="section-head">
+      <div class="fade-up">
+        <span class="section-head__num">— 03</span>
+        <span class="section-head__label">Teachers</span>
+      </div>
+      <div>
+        <h2 class="section-head__title fade-up delay-1">The people who <em>hold the room.</em></h2>
+        <p class="section-head__lede fade-up delay-2">Each teacher at Stillpoint has trained for over a decade. Hover over a card to read why they teach.</p>
+      </div>
+    </div>
+
+    <div class="teachers__grid">
+      <article class="teacher fade-up" data-quote="I teach because the body remembers what the mind forgets. Every class is a small act of remembering.">
+        <div class="teacher__media">
+          <img src="https://picsum.photos/seed/teacher-maya-portrait-warm/700/900.jpg" alt="Maya Okafor, vinyasa teacher">
+        </div>
+        <div class="teacher__body">
+          <p class="teacher__role">Vinyasa · 14 years</p>
+          <h3 class="teacher__name">Maya <em>Okafor</em></h3>
+          <p class="teacher__discipline">Slow flow, breath-led</p>
+          <p class="teacher__quote">
+            <span class="teacher__hint">Hover to read why I teach →</span>
+          </p>
+        </div>
+      </article>
+
+      <article class="teacher fade-up delay-1" data-quote="I teach so others may find the quiet I lost for years. The mat is where I learned to listen again.">
+        <div class="teacher__media">
+          <img src="https://picsum.photos/seed/teacher-iris-portrait-natural/700/900.jpg" alt="Iris Tanaka, yin and breathwork teacher">
+        </div>
+        <div class="teacher__body">
+          <p class="teacher__role">Yin · Breathwork · 11 years</p>
+          <h3 class="teacher__name">Iris <em>Tanaka</em></h3>
+          <p class="teacher__discipline">Stillness, observation</p>
+          <p class="teacher__quote">
+            <span class="teacher__hint">Hover to read why I teach →</span>
+          </p>
+        </div>
+      </article>
+
+      <article class="teacher fade-up delay-2" data-quote="I teach because stillness is a kind of justice. In a world that demands our rush, rest becomes resistance.">
+        <div class="teacher__media">
+          <img src="https://picsum.photos/seed/teacher-lena-portrait-soft/700/900.jpg" alt="Lena Vargas, restorative teacher">
+        </div>
+        <div class="teacher__body">
+          <p class="teacher__role">Restorative · 9 years</p>
+          <h3 class="teacher__name">Lena <em>Vargas</em></h3>
+          <p class="teacher__discipline">Nervous system, rest</p>
+          <p class="teacher__quote">
+            <span class="teacher__hint">Hover to read why I teach →</span>
+          </p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="schedule" id="schedule">
+    <div class="schedule__inner">
+      <div class="section-head" style="margin-bottom:4rem;">
+        <div class="fade-up">
+          <span class="section-head__num">— 04</span>
+          <span class="section-head__label">Schedule</span>
+        </div>
+        <div>
+          <h2 class="section-head__title fade-up delay-1">This week at <em>the studio.</em></h2>
+          <p class="section-head__lede fade-up delay-2">Tap any class to reveal the room, prerequisites, and live seat availability. We keep classes small — twelve students maximum.</p>
+        </div>
+      </div>
+
+      <div class="schedule__filter fade-up">
+        <button class="active" data-filter="all">All practices</button>
+        <button data-filter="vinyasa">Vinyasa</button>
+        <button data-filter="yin">Yin</button>
+        <button data-filter="restorative">Restorative</button>
+        <button data-filter="breathwork">Breathwork</button>
+      </div>
+
+      <div id="scheduleContainer">
+          <p style="text-align: center; font-family: var(--serif); font-style: italic; color: var(--ink-soft);">Loading schedule from backend...</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="begin" id="begin">
+    <div class="begin__inner">
+      <div class="begin__media fade-up">
+        <img src="https://picsum.photos/seed/yoga-studio-window-light-still/900/1100.jpg" alt="A quiet yoga studio with morning light through large windows">
+        <p class="begin__media-caption">"The first class is on us — arrive ten minutes early, and we'll have tea waiting."</p>
+      </div>
+
+      <div class="begin__form-wrap">
+        <p class="begin__eyebrow fade-up">— 05 / first class free</p>
+        <h2 class="begin__title fade-up delay-1">Come sit with us. <em>No cost, no pressure.</em></h2>
+        <p class="begin__lede fade-up delay-2">Your first class is complimentary. Tell us a little about yourself and we'll match you with a teacher and a practice that meets you where you are.</p>
+
+        <form class="form fade-up delay-3" id="beginForm">
+          <div class="form__success" id="formSuccess">
+            Thank you — your request has been received. We'll write to you within a day to confirm your first class. In the meantime, breathe easy.
+            <br>
+            <a href="#" class="form__reset-link" id="resetFormLink">Submit another request</a>
+          </div>
+
+          <div class="field">
+            <label for="fname">First name</label>
+            <input type="text" id="fname" name="fname" required>
+          </div>
+          <div class="field">
+            <label for="lname">Last name</label>
+            <input type="text" id="lname" name="lname" required>
+          </div>
+          <div class="field field--full">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="field field--full">
+            <label for="phone">Phone number</label>
+            <input type="tel" id="phone" name="phone" placeholder="So we can call you to confirm">
+          </div>
+          <div class="field">
+            <label for="practice">Preferred practice</label>
+            <select id="practice" name="practice">
+              <option value="">Choose one</option>
+              <option value="vinyasa">Vinyasa — slow flow</option>
+              <option value="yin">Yin — long holds</option>
+              <option value="restorative">Restorative — fully supported</option>
+              <option value="breathwork">Breathwork — seated</option>
+              <option value="unsure">Not sure yet</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="when">Preferred time</label>
+            <select id="when" name="when">
+              <option value="">Choose one</option>
+              <option value="weekday-am">Weekday mornings</option>
+              <option value="weekday-pm">Weekday evenings</option>
+              <option value="weekend">Weekends</option>
+              <option value="any">Anytime</option>
+            </select>
+          </div>
+          <div class="field field--full">
+            <label for="notes">Anything we should know? (optional)</label>
+            <input type="text" id="notes" name="notes" placeholder="Injuries, experience, what brings you in">
+          </div>
+          <button type="submit" class="form__submit">
+            Reserve my free class
+            <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1 5h12M9 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="form__fine">We'll reach out within 24 hours to confirm. No card required.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand-col">
+        <div class="footer__brand">Still<em>point</em></div>
+        <p class="footer__tag">A boutique yoga studio rooted in Oakland since 2014.</p>
+        <p class="footer__address">
+          147 Almond Street<br>
+          Oakland, CA 94610<br>
+          hello@stillpoint.studio<br>
+          (510) 555-0147
+        </p>
+      </div>
+      <div class="footer__col">
+        <h4>Practices</h4>
+        <ul>
+          <li><a href="#practices">Vinyasa</a></li>
+          <li><a href="#practices">Yin</a></li>
+          <li><a href="#practices">Restorative</a></li>
+          <li><a href="#practices">Breathwork</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Studio</h4>
+        <ul>
+          <li><a href="#teachers">Our teachers</a></li>
+          <li><a href="#schedule">Schedule</a></li>
+          <li><a href="#begin">First class free</a></li>
+          <li><a href="#">Membership</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Visit</h4>
+        <ul>
+          <li><a href="#">Directions</a></li>
+          <li><a href="#">Accessibility</a></li>
+          <li><a href="#">Code of conduct</a></li>
+          <li><a href="#">Studio journal</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2024 Stillpoint Studio. Made slowly, in Oakland.</span>
+      <span>Open daily · 6:30am – 8:30pm</span>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast"></div>
+
+  <div class="chime-prompt" id="chimePrompt">
+    <div class="chime-prompt__icon">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6v4l-1 2h12l-1-2V6a5 5 0 00-10 0zM6 13a2 2 0 004 0" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="chime-prompt__text">
+      <strong>A small chime</strong>
+      will sound as you scroll, to mark your arrival.
+    </div>
+    <button class="chime-prompt__close" id="chimeClose" aria-label="Dismiss">×</button>
+  </div>
+
+  <!-- Booking Modal -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="modal-card">
+      <button class="modal-close" id="modalClose">×</button>
+      <h3 class="modal-title">Reserve your <em>seat</em></h3>
+      <p class="modal-subtitle" id="modalClassInfo"></p>
+      
+      <form class="booking-form" id="bookingForm">
+        <input type="text" id="bookingName" placeholder="Full name" required>
+        <input type="email" id="bookingEmail" placeholder="Email address" required>
+        <button type="submit" id="bookingSubmitBtn">Confirm booking</button>
+      </form>
+    </div>
+  </div>
+
+<script>
+  const API_BASE = '/api';
+
+  // ===== Nav scroll state =====
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 40) nav.classList.add('scrolled');
+    else nav.classList.remove('scrolled');
+  });
+
+  // ===== Fade-up on scroll =====
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // ===== Breath label cycle =====
+  const breathLabel = document.getElementById('breathLabel');
+  let breathPhase = 0;
+  setInterval(() => {
+    breathPhase = (breathPhase + 1) % 2;
+    breathLabel.style.opacity = '0';
+    setTimeout(() => {
+      breathLabel.textContent = breathPhase === 0 ? 'inhale' : 'exhale';
+      breathLabel.style.opacity = '1';
+    }, 300);
+  }, 2000);
+
+  // ===== Teacher quote typing on hover =====
+  document.querySelectorAll('.teacher').forEach(card => {
+    const quoteEl = card.querySelector('.teacher__quote');
+    const quote = card.dataset.quote;
+    let typing = false;
+    let timer = null;
+
+    card.addEventListener('mouseenter', () => {
+      if (typing) return;
+      typing = true;
+      quoteEl.innerHTML = '';
+      let i = 0;
+      const cursor = document.createElement('span');
+      cursor.className = 'teacher__caret';
+      quoteEl.appendChild(cursor);
+
+      timer = setInterval(() => {
+        if (i < quote.length) {
+          cursor.insertAdjacentText('beforebegin', quote[i]);
+          i++;
+        } else {
+          clearInterval(timer);
+          setTimeout(() => {
+            if (cursor.parentNode) cursor.remove();
+          }, 1200);
+          typing = false;
+        }
+      }, 32);
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (timer) clearInterval(timer);
+      typing = false;
+      quoteEl.innerHTML = '<span class="teacher__hint">Hover to read why I teach →</span>';
+    });
+  });
+
+  // ===== Schedule row expand =====
+  document.addEventListener('click', (e) => {
+    const head = e.target.closest('.schedule__row-head');
+    if (head) {
+      const row = head.parentElement;
+      const wasOpen = row.classList.contains('open');
+      const day = row.closest('.schedule__day');
+      if (day) {
+          day.querySelectorAll('.schedule__row.open').forEach(r => {
+            if (r !== row) r.classList.remove('open');
+          });
+      }
+      row.classList.toggle('open', !wasOpen);
+    }
+  });
+
+  // ===== First Class Free Form submit =====
+  const beginForm = document.getElementById('beginForm');
+  const formSuccess = document.getElementById('formSuccess');
+  const resetFormLink = document.getElementById('resetFormLink');
+
+  beginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const payload = {
+      first_name: document.getElementById('fname').value,
+      last_name: document.getElementById('lname').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      preferred_practice: document.getElementById('practice').value,
+      preferred_time: document.getElementById('when').value,
+      notes: document.getElementById('notes').value,
+    };
+
+    try {
+      const response = await fetch(`${API_BASE}/free-class/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        formSuccess.classList.add('show');
+        beginForm.reset(); 
+        beginForm.querySelectorAll('input, select, button').forEach(el => {
+          el.setAttribute('disabled', true);
+          el.style.opacity = '0.5'; 
+        });
+        showToast(data.message || 'Thank you! We will be in touch soon.');
+      } else {
+        const errorMsg = data.email ? data.email[0] : (data.detail || 'Something went wrong.');
+        showToast(errorMsg);
+      }
+    } catch (err) {
+      showToast('Network error. Is the Django server running?');
+    }
+  });
+
+  // Reset form link logic
+  resetFormLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    formSuccess.classList.remove('show');
+    beginForm.querySelectorAll('input, select, button').forEach(el => {
+      el.removeAttribute('disabled');
+      el.style.opacity = '1';
+    });
+  });
+
+  // ===== Toast =====
+  const toast = document.getElementById('toast');
+  let toastTimer = null;
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3800);
+  }
+
+  // ===== Chime on first scroll =====
+  let chimePlayed = false;
+  let audioCtx = null;
+  const chimePrompt = document.getElementById('chimePrompt');
+
+  function playChime() {
+    if (chimePlayed) return;
+    chimePlayed = true;
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const now = audioCtx.currentTime;
+
+      const osc1 = audioCtx.createOscillator();
+      const gain1 = audioCtx.createGain();
+      osc1.frequency.value = 523.25;
+      osc1.type = 'sine';
+      gain1.gain.setValueAtTime(0, now);
+      gain1.gain.linearRampToValueAtTime(0.07, now + 0.04);
+      gain1.gain.exponentialRampToValueAtTime(0.0001, now + 2.8);
+      osc1.connect(gain1).connect(audioCtx.destination);
+      osc1.start(now);
+      osc1.stop(now + 2.9);
+
+      const osc2 = audioCtx.createOscillator();
+      const gain2 = audioCtx.createGain();
+      osc2.frequency.value = 783.99;
+      osc2.type = 'sine';
+      gain2.gain.setValueAtTime(0, now + 0.18);
+      gain2.gain.linearRampToValueAtTime(0.045, now + 0.22);
+      gain2.gain.exponentialRampToValueAtTime(0.0001, now + 3.2);
+      osc2.connect(gain2).connect(audioCtx.destination);
+      osc2.start(now + 0.18);
+      osc2.stop(now + 3.3);
+
+      setTimeout(() => chimePrompt.classList.remove('show'), 1200);
+    } catch (err) {}
+  }
+
+  let promptShown = false;
+  function showChimePrompt() {
+    if (promptShown) return;
+    promptShown = true;
+    setTimeout(() => chimePrompt.classList.add('show'), 800);
+  }
+
+  document.getElementById('chimeClose').addEventListener('click', () => {
+    chimePrompt.classList.remove('show');
+  });
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80 && !chimePlayed) {
+      playChime();
+    }
+  }, { passive: true });
+
+  ['mousemove', 'touchstart', 'keydown'].forEach(evt => {
+    window.addEventListener(evt, showChimePrompt, { once: true, passive: true });
+  });
+
+  // ===== Smooth anchor links =====
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href');
+      if (id.length > 1) {
+        const target = document.querySelector(id);
+        if (target) {
+          e.preventDefault();
+          const y = target.getBoundingClientRect().top + window.scrollY - 30;
+          window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+      }
+    });
+  });
+
+  // ==========================================
+  // FETCH SCHEDULE FROM DJANGO BACKEND
+  // ==========================================
+  async function loadSchedule() {
+    const container = document.getElementById('scheduleContainer');
+    
+    try {
+      const response = await fetch(`${API_BASE}/schedule/?weeks=1`);
+      if (!response.ok) throw new Error('Failed to load schedule');
+      
+      const data = await response.json();
+      container.innerHTML = ''; 
+
+      data.days.forEach(dayData => {
+        const dayDate = new Date(dayData.date + 'T00:00:00');
+        const dayName = dayDate.toLocaleDateString('en-US', { weekday: 'long' });
+        const formattedDate = dayDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+        
+        const today = new Date();
+        const isToday = dayDate.toDateString() === today.toDateString();
+
+        const dayDiv = document.createElement('div');
+        dayDiv.className = 'schedule__day fade-up in';
+        dayDiv.dataset.day = dayName.toLowerCase().slice(0, 3);
+
+        let rowsHtml = '';
+        dayData.classes.forEach(cls => {
+          const timeStr = new Date(`2000-01-01T${cls.start_time}`).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }).toLowerCase();
+          
+          let dotsHtml = '';
+          const totalDots = cls.effective_capacity;
+          const available = cls.seats_available;
+          for(let i=0; i<totalDots; i++) {
+            let dotClass = '';
+            if (i < available) {
+              dotClass = cls.seat_status === 'few' ? 'few' : 'open';
+            } else {
+              dotClass = 'full';
+            }
+            dotsHtml += `<span class="${dotClass}"></span>`;
+          }
+
+          const seatsText = cls.seat_status === 'full' ? 'Full · waitlist' : `${cls.seats_available} / ${cls.effective_capacity}`;
+          const reserveBtnText = cls.seat_status === 'full' ? 'Join waitlist' : 'Reserve a seat';
+
+          // Hardcoded prerequisites logic based on practice
+          let prerequisites = "None — all levels welcome";
+          let bring = "Just yourself; mats and props provided";
+          if (cls.practice.slug === 'vinyasa' && cls.subtitle && cls.subtitle.includes('Strong')) {
+            prerequisites = "Comfortable with sun salutations";
+            bring = "Water; mats and props provided";
+          } else if (cls.practice.slug === 'restorative') {
+            bring = "Layers; eye pillow provided";
+          } else if (cls.practice.slug === 'breathwork') {
+            bring = "Empty stomach recommended";
+          }
+
+          rowsHtml += `
+            <div class="schedule__row" data-practice="${cls.practice.slug}">
+              <div class="schedule__row-head">
+                <span class="schedule__time">${timeStr}</span>
+                <span class="schedule__class"><em>${cls.practice.name}</em> · ${cls.subtitle || ''}</span>
+                <span class="schedule__teacher">${cls.teacher.name}</span>
+                <span class="schedule__duration">${cls.duration_minutes} min</span>
+                <span class="schedule__seats">
+                  <span class="seats-dots">${dotsHtml}</span>
+                  ${seatsText}
+                </span>
+                <span class="schedule__expand"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1v8M1 5h8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></span>
+              </div>
+              <div class="schedule__detail">
+                <div class="schedule__detail-inner">
+                  <div class="schedule__detail-content">
+                    <strong>About this class</strong>
+                    ${cls.practice.description}
+                  </div>
+                  <dl class="schedule__detail-meta">
+                    <div><dt>Room</dt><dd>${cls.room.name}</dd></div>
+                    <div><dt>Teacher</dt><dd>${cls.teacher.name}</dd></div>
+                    <div><dt>Intensity</dt><dd>${cls.practice.intensity} / 5</dd></div>
+                    <div><dt>Prerequisites</dt><dd>${prerequisites}</dd></div>
+                    <div><dt>Bring</dt><dd>${bring}</dd></div>
+                  </dl>
+                  <a href="#" class="schedule__reserve" data-class-id="${cls.id}" data-session-date="${dayData.date}" data-practice-name="${cls.practice.name}">${reserveBtnText}</a>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        dayDiv.innerHTML = `
+          <div class="schedule__day-head">
+            <h3 class="schedule__day-name">${dayName}</h3>
+            <span class="schedule__day-date">${formattedDate}</span>
+            ${isToday ? '<span class="schedule__day-today">Today</span>' : ''}
+          </div>
+          ${rowsHtml}
+        `;
+
+        container.appendChild(dayDiv);
+      });
+
+      // ==========================================
+      // SCHEDULE FILTER LOGIC
+      // ==========================================
+      document.querySelectorAll('.schedule__filter button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.schedule__filter button').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          
+          const filter = btn.dataset.filter;
+          
+          document.querySelectorAll('.schedule__row').forEach(row => {
+            if (filter === 'all' || row.dataset.practice === filter) {
+              row.style.display = ''; 
+            } else {
+              row.style.display = 'none'; 
+              row.classList.remove('open'); 
+            }
+          });
+
+          document.querySelectorAll('.schedule__day').forEach(day => {
+            const visibleRows = [...day.querySelectorAll('.schedule__row')].some(r => r.style.display !== 'none');
+            day.style.display = visibleRows ? '' : 'none';
+          });
+        });
+      });
+
+    } catch (error) {
+      console.error('Schedule load error:', error);
+      container.innerHTML = '<p style="text-align: center; font-family: var(--serif); font-style: italic; color: var(--terracotta);">Could not load schedule. Make sure Django server is running.</p>';
+    }
+  }
+
+  loadSchedule();
+
+  // ==========================================
+  // BOOKING MODAL LOGIC
+  // ==========================================
+  const bookingModal = document.getElementById('bookingModal');
+  const modalClassInfo = document.getElementById('modalClassInfo');
+  const bookingForm = document.getElementById('bookingForm');
+  const bookingSubmitBtn = document.getElementById('bookingSubmitBtn');
+  let currentBookingTarget = null;
+
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('.schedule__reserve') && !e.target.closest('.schedule__reserve').classList.contains('disabled')) {
+      e.preventDefault();
+      const btn = e.target.closest('.schedule__reserve');
+      currentBookingTarget = {
+        classId: btn.dataset.classId,
+        sessionDate: btn.dataset.sessionDate,
+        practiceName: btn.dataset.practiceName,
+        row: btn.closest('.schedule__row')
+      };
+      
+      modalClassInfo.textContent = `${currentBookingTarget.practiceName} on ${currentBookingTarget.sessionDate}`;
+      bookingModal.classList.add('show');
+    }
+  });
+
+  document.getElementById('modalClose').addEventListener('click', () => {
+    bookingModal.classList.remove('show');
+  });
+  bookingModal.addEventListener('click', (e) => {
+    if (e.target === bookingModal) bookingModal.classList.remove('show');
+  });
+
+  bookingForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    bookingSubmitBtn.disabled = true;
+    bookingSubmitBtn.textContent = 'Reserving...';
+
+    const payload = {
+      yoga_class: currentBookingTarget.classId,
+      session_date: currentBookingTarget.sessionDate,
+      student_name: document.getElementById('bookingName').value,
+      student_email: document.getElementById('bookingEmail').value,
+      is_first_class: false
+    };
+
+    try {
+      const response = await fetch(`${API_BASE}/bookings/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        showToast(data.message);
+        bookingModal.classList.remove('show');
+        bookingForm.reset();
+        
+        const seatsDotsEl = currentBookingTarget.row.querySelector('.seats-dots');
+        const dots = seatsDotsEl.querySelectorAll('span');
+        for (let i = dots.length - 1; i >= 0; i--) {
+          if (!dots[i].classList.contains('full')) {
+            dots[i].className = 'full';
+            break;
+          }
+        }
+
+        const seatsTextEl = currentBookingTarget.row.querySelector('.schedule__seats');
+        const currentText = seatsTextEl.textContent.trim();
+        const match = currentText.match(/(\d+)\s*\/\s*(\d+)/);
+        if (match) {
+          const available = parseInt(match[1]) - 1;
+          const capacity = match[2];
+          if (available <= 0) {
+            seatsTextEl.innerHTML = `<span class="seats-dots">${seatsDotsEl.innerHTML}</span> Full · waitlist`;
+            const reserveBtn = currentBookingTarget.row.querySelector('.schedule__reserve');
+            reserveBtn.textContent = 'Join waitlist';
+          } else {
+            seatsTextEl.innerHTML = `<span class="seats-dots">${seatsDotsEl.innerHTML}</span> ${available} / ${capacity}`;
+          }
+        }
+      } else {
+        const errorMsg = data.student_email ? data.student_email[0] : (data.detail || data.non_field_errors?.[0] || 'Could not book class.');
+        showToast(errorMsg);
+      }
+    } catch (err) {
+      showToast('Network error. Is the server running?');
+    } finally {
+      bookingSubmitBtn.disabled = false;
+      bookingSubmitBtn.textContent = 'Confirm booking';
+    }
+  });
+</script>
+</body>
+</html>
