@@ -1126,6 +1126,76 @@
     padding-bottom:2px;
   }
 
+  /* ===== Support Studio ===== */
+  .support-studio {
+    padding: 6rem 3rem;
+    text-align: center;
+    background: var(--paper-deep);
+    border-top: 1px solid var(--line);
+  }
+  .support-inner {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .support-text {
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    color: var(--ink);
+    margin-bottom: 2rem;
+    font-variation-settings:"opsz" 40,"SOFT" 70;
+  }
+  .support-text span {
+    font-size: 1rem;
+    color: var(--ink-soft);
+  }
+  .support-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .support-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2rem;
+    border-radius: 3rem;
+    text-decoration: none;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    transition: transform 300ms ease, background 300ms ease;
+  }
+  .support-btn:hover {
+    transform: translateY(-2px);
+  }
+  .support-btn--stripe {
+    background: var(--ink);
+    color: var(--cream);
+  }
+  .support-btn--stripe:hover {
+    background: #5A554B;
+  }
+  .support-btn--paypal {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--ink);
+  }
+  .support-btn--paypal:hover {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+
+
+
+
+
+
   .footer{
     padding:6rem 3rem 3rem;
     position:relative;
@@ -1783,6 +1853,16 @@
           </button>
           <p class="form__fine">We'll reach out within 24 hours to confirm. No card required.</p>
         </form>
+      </div>
+    </div>
+  </section>
+
+    <section class="support-studio">
+    <div class="support-inner">
+      <p class="support-text">Enjoying the calm? Help us keep the studio accessible.<br><span>Every contribution plants a seed.</span></p>
+      <div class="support-buttons">
+        <a href="https://buy.stripe.com/test_4gM8wPeRX66J9rS9jSasg03" target="_blank" class="support-btn support-btn--stripe">Support via Stripe</a>
+        <a href="YOUR_PAYPAL_LINK_HERE" target="_blank" class="support-btn support-btn--paypal">Donate via PayPal</a>
       </div>
     </div>
   </section>
