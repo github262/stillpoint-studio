@@ -192,17 +192,34 @@ ASGI_APPLICATION = "config.asgi.application"
 # ===== MySQL =====
 # pyth
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "stillpoint",
+#         "USER": "stillpoint_user",
+#         "PASSWORD": "stillpoint_1234",  # <-- Hardcoded here
+#         "HOST": "127.0.0.1",            # <-- Hardcoded here
+#         "PORT": "3306",                 # <-- Hardcoded here
+#         "OPTIONS": {
+#             "charset": "utf8mb4",
+#             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+#         },
+#     }
+# }
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": "stillpoint",
-        "USER": "stillpoint_user",
-        "PASSWORD": "stillpoint_1234",  # <-- Hardcoded here
-        "HOST": "127.0.0.1",            # <-- Hardcoded here
-        "PORT": "3306",                 # <-- Hardcoded here
+        "NAME": os.getenv("DB_NAME", "stillpoint"),
+        "USER": os.getenv("DB_USER", "stillpoint_user"),
+        "PASSWORD": os.getenv("DB_PASSWORD", "stillpoint_pass"),
+        "HOST": os.getenv("DB_HOST", "127.0.0.1"),
+        "PORT": os.getenv("DB_PORT", "3306"),
         "OPTIONS": {
             "charset": "utf8mb4",
             "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+            # Use the local ca.pem file for Aiven SSL
+            "ssl": {"ca": BASE_DIR / "ca.pem"}
         },
     }
 }
