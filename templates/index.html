@@ -148,6 +148,27 @@
   }
   .nav__cta:hover{background:var(--terracotta);transform:translateY(-1px);}
 
+  .nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .nav__cta--support {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .nav__cta--support:hover {
+    background: var(--ink-soft);
+    color: var(--cream);
+    border-color: var(--ink-soft);
+    transform: translateY(-1px);
+  }
+
+
   .hero{
     min-height:100vh;
     position:relative;
