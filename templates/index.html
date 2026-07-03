@@ -1479,6 +1479,86 @@
     cursor: not-allowed;
   }
 
+
+    /* ===== Studio Shop ===== */
+  .shop {
+    padding: 8rem 3rem;
+    position: relative;
+    z-index: 5;
+    background: linear-gradient(180deg, transparent, var(--paper-deep) 20%, var(--paper-deep) 80%, transparent);
+  }
+  .shop__grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+  }
+  .product-card {
+    background: var(--cream);
+    border: 1px solid var(--line-soft);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 500ms ease, box-shadow 500ms ease;
+  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 60px -30px rgba(46,42,33,0.2);
+  }
+  .product-card__media {
+    position: relative;
+    aspect-ratio: 4/5;
+    overflow: hidden;
+    background: var(--sand);
+  }
+  .product-card__media img {
+    width: 100%; height: 100%; object-fit: cover;
+    filter: sepia(0.15) saturate(0.85);
+    transition: transform 6s ease-out;
+  }
+  .product-card:hover .product-card__media img { transform: scale(1.06); }
+  .product-card__tag {
+    position: absolute; top: 1.2rem; left: 1.2rem;
+    background: rgba(247,242,232,0.92); backdrop-filter: blur(8px);
+    color: var(--ink); font-size: 0.68rem; letter-spacing: 0.24em; text-transform: uppercase;
+    padding: 0.4rem 0.8rem; border-radius: 2rem;
+  }
+  .product-card__body {
+    padding: 1.8rem; display: flex; flex-direction: column; flex-grow: 1;
+  }
+  .product-card__title {
+    font-family: var(--serif); font-weight: 300; font-size: 1.5rem;
+    line-height: 1.2; color: var(--ink); margin-bottom: 0.6rem;
+    font-variation-settings: "opsz" 40,"SOFT" 60;
+  }
+  .product-card__title em { font-style: italic; color: var(--sage-deep); }
+  .product-card__desc {
+    font-size: 0.95rem; color: var(--ink-soft); line-height: 1.6; margin-bottom: 1.5rem; flex-grow: 1;
+  }
+  .product-card__footer {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 1.2rem; border-top: 1px solid var(--line-soft);
+  }
+  .product-card__price {
+    font-family: var(--serif); font-style: italic; font-size: 1.4rem; color: var(--terracotta);
+  }
+  .product-card__price-sub { font-size: 0.9rem; color: var(--ink-soft); }
+  .product-card__btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: var(--ink); color: var(--cream); text-decoration: none;
+    padding: 0.7rem 1.2rem; border-radius: 2rem; font-size: 0.72rem;
+    letter-spacing: 0.14em; text-transform: uppercase; font-weight: 500;
+    transition: background 300ms ease;
+  }
+  .product-card__btn:hover { background: var(--terracotta); }
+  
+  @media (max-width: 980px) {
+    .shop { padding: 5rem 1.5rem; }
+    .shop__grid { grid-template-columns: 1fr; gap: 2rem; }
+  }
+
   @media (max-width:980px){
     .nav{padding:1.2rem 1.5rem;}
     .nav__links{display:none;}
@@ -1547,6 +1627,7 @@
       <li><a href="#practices">Practices</a></li>
       <li><a href="#teachers">Teachers</a></li>
       <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#shop">Shop</a></li>  <!-- Add this line -->
       <li><a href="#begin">Begin</a></li>
     </ul>
 
@@ -1897,6 +1978,71 @@
       </div>
     </div>
   </section>
+    <!-- ===== Studio Shop ===== -->
+  <section class="shop" id="shop">
+    <div class="section-head">
+      <div class="fade-up">
+        <span class="section-head__num">— 06</span>
+        <span class="section-head__label">Studio Shop</span>
+      </div>
+      <div>
+        <h2 class="section-head__title fade-up delay-1">Deepen your <em>practice</em>.</h2>
+        <p class="section-head__lede fade-up delay-2">Take Stillpoint with you. Downloadable guides, posture manuals, and on-demand memberships to support your journey off the mat.</p>
+      </div>
+    </div>
+
+    <div class="shop__grid">
+      <!-- Product 1: 7-Day Reset -->
+      <article class="product-card fade-up">
+        <div class="product-card__media">
+          <img src="https://picsum.photos/seed/yoga-pdf-reset-guide/800/1000.jpg" alt="7-Day Reset Guide">
+          <span class="product-card__tag">Digital Guide</span>
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__title">The 7-Day <em>Stillpoint Reset</em></h3>
+          <p class="product-card__desc">A week of gentle daily sequences to reset your nervous system and reconnect with your body. Perfect for beginners.</p>
+          <div class="product-card__footer">
+            <span class="product-card__price">$19</span>
+            <a href="https://buy.stripe.com/test_3cIaEXdNT7aN8nOeEcasg04" target="_blank" class="product-card__btn">Buy Guide</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Product 2: Desk Worker Guide -->
+      <article class="product-card fade-up delay-1">
+        <div class="product-card__media">
+          <img src="https://picsum.photos/seed/yoga-desk-posture-guide/800/1000.jpg" alt="Desk Worker Posture Guide">
+          <span class="product-card__tag">Digital Guide</span>
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__title">The Remote Worker's <em>Posture Manual</em></h3>
+          <p class="product-card__desc">Five targeted poses to undo the damage of sitting. Fix tech-neck and release tight hips in 10 minutes a day.</p>
+          <div class="product-card__footer">
+            <span class="product-card__price">$12</span>
+            <a href="https://buy.stripe.com/test_6oU28rcJP3YBdI8bs0asg05" target="_blank" class="product-card__btn">Buy Guide</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Product 3: Membership -->
+      <article class="product-card fade-up delay-2">
+        <div class="product-card__media">
+          <img src="https://picsum.photos/seed/yoga-membership-video-library/800/1000.jpg" alt="Sanctuary Membership">
+          <span class="product-card__tag">Membership</span>
+        </div>
+        <div class="product-card__body">
+          <h3 class="product-card__title">Stillpoint <em>Sanctuary</em></h3>
+          <p class="product-card__desc">Monthly live online classes and an on-demand video library. Practice from anywhere, anytime. Cancel whenever.</p>
+          <div class="product-card__footer">
+            <span class="product-card__price">$9<span class="product-card__price-sub">/mo</span></span>
+            <a href="https://buy.stripe.com/test_00waEXbFL9iVgUk0Nmasg06" target="_blank" class="product-card__btn">Join Now</a>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+
 
     <section class="support-studio">
     <div class="support-inner">
